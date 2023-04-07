@@ -1,0 +1,11 @@
+name: deploys-pr-reminded
+run-name: PR \#${{ github.event.pull_request.number }} by @${{ github.event.pull_request.user.login }} is undeployed 48h after merge
+on:
+  pull_request:
+    types:
+      - labeled
+jobs:
+  trigger-slack: # pulse-eng-undeployed-prs is subscribed to this no-op job
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'deploy/reminded'}}
+    steps:

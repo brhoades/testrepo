@@ -1,5 +1,4 @@
 name: deploys-pr-slack-reminders
-run-name: "PR #${{ github.event.pull_request.number }} by @${{ github.event.pull_request.user.login }} is undeployed days after merge"
 on:
   pull_request:
     types:

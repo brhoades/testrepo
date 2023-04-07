@@ -1,5 +1,5 @@
-name: deploys-pr-reminded
-run-name: PR \#${{ github.event.pull_request.number }} by @${{ github.event.pull_request.user.login }} is undeployed 48h after merge
+name: deploys-pr-slack-reminders
+run-name: "PR #${{ github.event.pull_request.number }} by @${{ github.event.pull_request.user.login }} is undeployed days after merge"
 on:
   pull_request:
     types:
@@ -7,7 +7,15 @@ on:
 jobs:
   trigger-slack: # pulse-eng-undeployed-prs is subscribed to this no-op job
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name == 'deploy/reminded'}}
+    if: ${{ github.event.label.name == 'deploy/reminded' }}
     steps:
-    - name: no-op
-      run: echo ""
+    - name: Send GitHub Action trigger data to Slack workflow
+      id: slack
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        payload: |
+          {
+            "text": "PR <${{ github.event.pull_request.url }}|#${{ github.event.pull_request.number }}> by @${{ github.event.pull_request.user.login }} has not been deployed. It was merged on ${{ github.event.pull_request.mergedAt }}."
+          }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.UNDEPLOYED_PRS_SLACK_WEBHOOK_URL }}

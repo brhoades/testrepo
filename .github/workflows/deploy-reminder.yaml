@@ -9,3 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.label.name == 'deploy/reminded'}}
     steps:
+    - name: no-op
+      run: echo ""

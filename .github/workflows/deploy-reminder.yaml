@@ -16,5 +16,5 @@ jobs:
           {
             "text": "PR <${{ github.event.pull_request.url }}|#${{ github.event.pull_request.number }}> by @${{ github.event.pull_request.user.login }} has not been deployed. It was merged on ${{ github.event.pull_request.mergedAt }}."
           }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.UNDEPLOYED_PRS_SLACK_WEBHOOK_URL }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.UNDEPLOYED_PRS_SLACK_WEBHOOK_URL }}

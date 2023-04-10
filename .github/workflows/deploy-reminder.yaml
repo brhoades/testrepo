@@ -6,7 +6,7 @@ on:
 jobs:
   trigger-slack: # pulse-eng-undeployed-prs is subscribed to this no-op job
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name == 'deploy/reminded' }}
+    if: ${{ github.event.label.name == 'deploy/reminded' && github.event.pull_request.merged }}
     env:
       SLACK_WEBHOOK_URL: "${{ secrets.UNDEPLOYED_PRS_SLACK_WEBHOOK_URL }}"
     steps:
@@ -16,5 +16,5 @@ jobs:
       with:
         payload: |
           {
-            "text": "PR <${{ github.event.pull_request.url }}|#${{ github.event.pull_request.number }}> by @${{ github.event.pull_request.user.login }} has not been deployed. It was merged on ${{ github.event.pull_request.mergedAt }}."
+            "text": "PR <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}> by <${{ github.event.pull_request.user.url}}|@${{ github.event.pull_request.user.login }}> has not been deployed. It was merged on ${{ github.event.pull_request.mergedAt }}."
           }
